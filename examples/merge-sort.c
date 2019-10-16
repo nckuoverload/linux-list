@@ -17,13 +17,6 @@ void printAllValues(struct list_head *head)
     }
 }
 
-void delay()
-{
-    unsigned int r = time(0) + 1;
-    while (time(0) < r)
-        ;
-}
-
 static void list_mergesort(struct list_head *head)
 {
     if (list_empty(head) || list_is_singular(head)) {
@@ -35,7 +28,6 @@ static void list_mergesort(struct list_head *head)
     INIT_LIST_HEAD(&list_right);
 
     struct listitem *left_item = NULL, *right_item = NULL;
-    // split the list to two list
     while (!list_empty(head)) {
         left_item = list_first_entry(head, struct listitem, list);
         right_item = list_last_entry(head, struct listitem, list);
@@ -43,8 +35,6 @@ static void list_mergesort(struct list_head *head)
         list_del(&right_item->list);
         list_add(&right_item->list, &list_right);
         list_add_tail(&left_item->list, &list_left);
-        // list_del(&left_item->list);
-        // list_del(&right_item->list);
         if (list_is_singular(head)) {
             left_item = list_first_entry(head, struct listitem, list);
             list_del(&left_item->list);
@@ -62,7 +52,6 @@ static void list_mergesort(struct list_head *head)
             list_splice_tail(&list_left, head);
             break;
         }
-        // try and error
         struct listitem *l =
                             list_first_entry(&list_left, struct listitem, list),
                         *r = list_first_entry(&list_right, struct listitem,
@@ -75,8 +64,6 @@ static void list_mergesort(struct list_head *head)
             list_add_tail(&r->list, head);
         }
     }
-    // free(list_left);
-    // free(list_right);
 }
 
 int main(void)
